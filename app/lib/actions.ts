@@ -57,6 +57,7 @@ export async function createInvoice(prevState: State, formData: FormData) {
           VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
         `;
   } catch (error) {
+    console.log(error);
     throw new Error("Failed to Create Invoice");
   }
   revalidatePath("/dashboard/invoices");
@@ -68,7 +69,7 @@ export async function updateInvoice(
   prevState: State,
   formData: FormData
 ) {
-  const validatedFields = CreateInvoice.safeParse({
+  const validatedFields = UpdateInvoice.safeParse({
     customerId: formData.get("customerId"),
     amount: formData.get("amount"),
     status: formData.get("status"),
@@ -92,6 +93,7 @@ export async function updateInvoice(
         WHERE id = ${id}
       `;
   } catch (error) {
+    console.log(error);
     throw new Error("Failed to Update Invoice");
   }
 
@@ -100,10 +102,10 @@ export async function updateInvoice(
 }
 
 export async function deleteInvoice(id: string) {
-  //   throw new Error("Failed to Delete Invoice");
   try {
     await sql`DELETE FROM invoices WHERE id = ${id}`;
   } catch (error) {
+    console.log(error);
     throw new Error("Failed to Delete Invoice");
   }
   revalidatePath("/dashboard/invoices");
